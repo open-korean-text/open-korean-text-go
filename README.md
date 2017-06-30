@@ -1,4 +1,4 @@
-# dic-updater
+# open-korean-text-dic-updater
 Dictionary updater for open-korean-text
 
 ### Usage
