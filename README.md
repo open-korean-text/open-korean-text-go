@@ -6,5 +6,6 @@ Dictionary updater for open-korean-text
 2. Build!  
 `go build`
 3. Run a file generated through build.
-4. Input `[dictionary.txt] [additionalWords.txt]` and press 'Enter'!
+4. Input **current dictionary** file name.
+5. Input file name including **additional words**.
 5. result.txt will be generated.

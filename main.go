@@ -31,21 +31,32 @@ func getAdditionalWords(file string) ([]string, error) {
 	return result, nil
 }
 
+func getFileName() (string, error) {
+	var file string
+	fmt.Scan(&file)
+	if strings.Index(file, ".txt") == -1 {
+		return "", fmt.Errorf("Extension of dictionary file must be 'txt'")
+	}
+
+	return file, nil
+}
+
 func getInput() (string, string, error) {
-	fmt.Println("Please input like this '[dictionary.txt] [additionalWords.txt]'.")
-
-	var file1, file2 string
-	fmt.Scan(&file1, &file2)
-	fmt.Println("dictionary :", file1)
-	fmt.Println("additional words :", file2)
-
-	if strings.Index(file1, ".txt") == -1 {
-		return "", "", fmt.Errorf("Extension of dictionary file is 'txt'")
+	fmt.Println("Current dictionary file.")
+	file1, err := getFileName()
+	if err != nil {
+		return "", "", err
 	}
+	fmt.Println("Dictionary :", file1)
+	fmt.Println()
 
-	if strings.Index(file2, ".txt") == -1 {
-		return "", "", fmt.Errorf("Extension of additional words file is 'txt'")
+	fmt.Println("Additional words.(txt file)")
+	file2, err := getFileName()
+	if err != nil {
+		return "", "", err
 	}
+	fmt.Println("Additional words :", file2)
+	fmt.Println()
 
 	return file1, file2, nil
 }
