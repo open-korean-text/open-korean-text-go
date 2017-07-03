@@ -9,6 +9,16 @@ import (
 	"strings"
 )
 
+func getNewFile(fileName string) (*os.File, error) {
+	file, err := os.OpenFile(
+		fileName, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.FileMode(0644))
+	if err != nil {
+		return nil, err
+	}
+
+	return file, nil
+}
+
 func getAdditionalWords(file *os.File) ([]string, error) {
 	var result []string
 	scanner := bufio.NewScanner(file)
@@ -19,6 +29,11 @@ func getAdditionalWords(file *os.File) ([]string, error) {
 		}
 
 		result = append(result, strings.TrimSpace(s))
+	}
+
+	// If there are no additional words, close this programe
+	if len(result) == 0 {
+		return nil, fmt.Errorf(file.Name(), " is empty.")
 	}
 
 	sort.Sort(sort.StringSlice(result))
@@ -40,13 +55,12 @@ func getFile() (*os.File, error) {
 	return file, nil
 }
 
-func getInputFile() (*os.File, *os.File, error) {
+func getInputFile() (*os.File, *os.File) {
 	var file1, file2 *os.File
 
 	fmt.Println("Current dictionary file.")
 	for {
-		file, err := getFile()
-		if err != nil {
+		if file, err := getFile(); err != nil {
 			fmt.Println(err)
 			fmt.Println("Input again.")
 			continue
@@ -60,8 +74,7 @@ func getInputFile() (*os.File, *os.File, error) {
 
 	fmt.Println("Additional words.(txt file)")
 	for {
-		file, err := getFile()
-		if err != nil {
+		if file, err := getFile(); err != nil {
 			fmt.Println(err)
 			fmt.Println("Input again.")
 			continue
@@ -73,16 +86,12 @@ func getInputFile() (*os.File, *os.File, error) {
 		}
 	}
 
-	return file1, file2, nil
+	return file1, file2
 }
 
 func main() {
 	// Get Input from user
-	dicFile, newFile, err := getInputFile()
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	dicFile, newFile := getInputFile()
 	defer dicFile.Close()
 	defer newFile.Close()
 
@@ -93,8 +102,7 @@ func main() {
 	}
 
 	// Open and create new dic file
-	newDicFile, err := os.OpenFile(
-		"result.txt", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.FileMode(0644))
+	newDicFile, err := getNewFile("result.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -106,8 +114,7 @@ func main() {
 
 		// If there are no additional words, it writes words in dic file
 		if len(additionalWords) == 0 {
-			_, err = newDicFile.Write([]byte(s + "\r\n"))
-			if err != nil {
+			if _, err := newDicFile.Write([]byte(s + "\r\n")); err != nil {
 				log.Fatal(err)
 			}
 
@@ -115,11 +122,9 @@ func main() {
 		}
 
 		for len(additionalWords) > 0 {
-			word := additionalWords[0]
-			if strings.Compare(word, s) == -1 {
+			if word := additionalWords[0]; strings.Compare(word, s) == -1 {
 				// Add a additional word and remove the word in array
-				_, err = newDicFile.Write([]byte(word + "\r\n"))
-				if err != nil {
+				if _, err := newDicFile.Write([]byte(word + "\r\n")); err != nil {
 					log.Fatal(err)
 				}
 				additionalWords = additionalWords[1:]
@@ -133,14 +138,12 @@ func main() {
 			}
 		}
 
-		_, err = newDicFile.Write([]byte(s + "\r\n"))
-		if err != nil {
+		if _, err := newDicFile.Write([]byte(s + "\r\n")); err != nil {
 			log.Fatal(err)
 		}
 	}
 
-	err = scanner.Err()
-	if err != nil {
+	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
