@@ -35,28 +35,42 @@ func getFileName() (string, error) {
 	var file string
 	fmt.Scan(&file)
 	if strings.Index(file, ".txt") == -1 {
-		return "", fmt.Errorf("Extension of dictionary file must be 'txt'")
+		return "", fmt.Errorf("Extension of file must be 'txt'.")
 	}
 
 	return file, nil
 }
 
 func getInput() (string, string, error) {
+	var file1, file2 string
+
 	fmt.Println("Current dictionary file.")
-	file1, err := getFileName()
-	if err != nil {
-		return "", "", err
+	for {
+		file, err := getFileName()
+		if err != nil {
+			fmt.Println(err, "Input again.")
+			continue
+		} else {
+			fmt.Println("Dictionary :", file)
+			fmt.Println()
+			file1 = file
+			break
+		}
 	}
-	fmt.Println("Dictionary :", file1)
-	fmt.Println()
 
 	fmt.Println("Additional words.(txt file)")
-	file2, err := getFileName()
-	if err != nil {
-		return "", "", err
+	for {
+		file, err := getFileName()
+		if err != nil {
+			fmt.Println(err, "Input again.")
+			continue
+		} else {
+			fmt.Println("Additional words :", file)
+			fmt.Println()
+			file2 = file
+			break
+		}
 	}
-	fmt.Println("Additional words :", file2)
-	fmt.Println()
 
 	return file1, file2, nil
 }
