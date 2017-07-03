@@ -9,15 +9,9 @@ import (
 	"strings"
 )
 
-func getAdditionalWords(file string) ([]string, error) {
-	additionalFile, err := os.Open(file)
-	if err != nil {
-		return nil, fmt.Errorf(err.Error())
-	}
-	defer additionalFile.Close()
-
+func getAdditionalWords(file *os.File) ([]string, error) {
 	var result []string
-	scanner := bufio.NewScanner(additionalFile)
+	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		s := scanner.Text()
 		if s == "" {
@@ -31,27 +25,33 @@ func getAdditionalWords(file string) ([]string, error) {
 	return result, nil
 }
 
-func getFileName() (string, error) {
-	var file string
-	fmt.Scan(&file)
-	if strings.Index(file, ".txt") == -1 {
-		return "", fmt.Errorf("Extension of file must be 'txt'.")
+func getFile() (*os.File, error) {
+	var fileName string
+	fmt.Scan(&fileName)
+	if strings.Index(fileName, ".txt") == -1 {
+		return nil, fmt.Errorf("Extension of file must be 'txt'")
+	}
+
+	file, err := os.Open(fileName)
+	if err != nil {
+		return nil, fmt.Errorf(err.Error())
 	}
 
 	return file, nil
 }
 
-func getInput() (string, string, error) {
-	var file1, file2 string
+func getInputFile() (*os.File, *os.File, error) {
+	var file1, file2 *os.File
 
 	fmt.Println("Current dictionary file.")
 	for {
-		file, err := getFileName()
+		file, err := getFile()
 		if err != nil {
-			fmt.Println(err, "Input again.")
+			fmt.Println(err)
+			fmt.Println("Input again.")
 			continue
 		} else {
-			fmt.Println("Dictionary :", file)
+			fmt.Println("Dictionary :", file.Name())
 			fmt.Println()
 			file1 = file
 			break
@@ -60,12 +60,13 @@ func getInput() (string, string, error) {
 
 	fmt.Println("Additional words.(txt file)")
 	for {
-		file, err := getFileName()
+		file, err := getFile()
 		if err != nil {
-			fmt.Println(err, "Input again.")
+			fmt.Println(err)
+			fmt.Println("Input again.")
 			continue
 		} else {
-			fmt.Println("Additional words :", file)
+			fmt.Println("Additional words :", file.Name())
 			fmt.Println()
 			file2 = file
 			break
@@ -77,20 +78,16 @@ func getInput() (string, string, error) {
 
 func main() {
 	// Get Input from user
-	file1, file2, err := getInput()
+	dicFile, newFile, err := getInputFile()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Open dic file
-	dicFile, err := os.Open(file1)
-	if err != nil {
-		log.Fatal(err)
-	}
 	defer dicFile.Close()
+	defer newFile.Close()
 
 	// Open a file that includes additional words and get an array of these words
-	additionalWords, err := getAdditionalWords(file2)
+	additionalWords, err := getAdditionalWords(newFile)
 	if err != nil {
 		log.Fatal(err)
 	}
