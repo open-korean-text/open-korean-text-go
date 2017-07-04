@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -42,9 +44,16 @@ func getAdditionalWords(file *os.File) ([]string, error) {
 
 func getFile() (*os.File, error) {
 	var fileName string
-	fmt.Scan(&fileName)
-	if strings.Index(fileName, ".txt") == -1 {
-		return nil, fmt.Errorf("Extension of file must be 'txt'")
+
+	for {
+		fmt.Scan(&fileName)
+		if strings.Index(fileName, ".txt") == -1 {
+			fmt.Println("Extension of file must be 'txt'")
+			fmt.Println("Input again.")
+			continue
+		} else {
+			break
+		}
 	}
 
 	file, err := os.Open(fileName)
@@ -55,43 +64,28 @@ func getFile() (*os.File, error) {
 	return file, nil
 }
 
-func getInputFile() (*os.File, *os.File) {
-	var file1, file2 *os.File
-
+func getInputFile() (*os.File, *os.File, error) {
 	fmt.Println("Current dictionary file.")
-	for {
-		if file, err := getFile(); err != nil {
-			fmt.Println(err)
-			fmt.Println("Input again.")
-			continue
-		} else {
-			fmt.Println("Dictionary :", file.Name())
-			fmt.Println()
-			file1 = file
-			break
-		}
+	file1, err := getFile()
+	if err != nil {
+		return nil, nil, err
 	}
 
 	fmt.Println("Additional words.(txt file)")
-	for {
-		if file, err := getFile(); err != nil {
-			fmt.Println(err)
-			fmt.Println("Input again.")
-			continue
-		} else {
-			fmt.Println("Additional words :", file.Name())
-			fmt.Println()
-			file2 = file
-			break
-		}
+	file2, err := getFile()
+	if err != nil {
+		return nil, nil, err
 	}
 
-	return file1, file2
+	return file1, file2, nil
 }
 
-func main() {
+func createNewDic() {
 	// Get Input from user
-	dicFile, newFile := getInputFile()
+	dicFile, newFile, err := getInputFile()
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer dicFile.Close()
 	defer newFile.Close()
 
@@ -102,7 +96,7 @@ func main() {
 	}
 
 	// Open and create new dic file
-	newDicFile, err := getNewFile("result.txt")
+	newDicFile, err := getNewFile("new_" + filepath.Base(dicFile.Name()))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -148,4 +142,35 @@ func main() {
 	}
 
 	fmt.Println("This work is done successfully! ^^")
+}
+
+func getSelection() (int, error) {
+	fmt.Println("Select menu number.")
+	fmt.Println("1. Create new dictionary file")
+	fmt.Println("2. Exit")
+
+	var number string
+	fmt.Scan(&number)
+
+	return strconv.Atoi(number)
+}
+
+func main() {
+	for {
+		// Select menu
+		number, err := getSelection()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		switch number {
+		case 1:
+			createNewDic()
+		case 2:
+			fmt.Println("Have a nice day! Bye~")
+			return
+		}
+
+		fmt.Println()
+	}
 }
