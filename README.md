@@ -10,5 +10,9 @@ go get github.com/open-korean-text/open-korean-text-go/openkoreantext.org/proces
 go get github.com/open-korean-text/open-korean-text-go/openkoreantext.org/util
 ```
 
-- Run
-Refer 'main.go'
+### Run
+Refer to 'main.go'
+
+
+### And...
+'Tokenizer' and 'Phrase Extractor' will be built!
