@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	processor "openkoreantext.org/processor"
+	processor "github.com/open-korean-text/open-korean-text-go/openkoreantext.org/processor"
 )
 
 func main() {
