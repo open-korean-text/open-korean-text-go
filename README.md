@@ -4,14 +4,27 @@
 run these operations on terminal or console
 
 ```
-go get github.com/open-korean-text/open-korean-text-go/dic
-go get github.com/open-korean-text/open-korean-text-go/hangul
-go get github.com/open-korean-text/open-korean-text-go/processor
-go get github.com/open-korean-text/open-korean-text-go/util
+go get github.com/open-korean-text/open-korean-text-go
 ```
 
+You might get some errors, but don't worry!
+That's not problem.
+
 ### Run
-Refer to 'main.go'
+```go
+package main
+
+import (
+	"fmt"
+
+	processor "github.com/open-korean-text/open-korean-text-go/processor"
+)
+
+func main() {
+	result := processor.Normalize("만듀 먹것니? 먹겄서? 먹즤?")
+	fmt.Println(result)
+}
+```
 
 
 ### And...
