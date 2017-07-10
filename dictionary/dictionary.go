@@ -41,6 +41,20 @@ func getFile(fileName string) (*os.File, error) {
 	return file, nil
 }
 
+func getDic(dicPath string) ([]string, error) {
+	file, err := getFile(basePath + dicPath)
+	if err != nil {
+		return nil, err
+	}
+
+	dic, err := getWordList(file)
+	if err != nil {
+		return nil, err
+	}
+
+	return dic, nil
+}
+
 // GetNounDic : To get noun list
 func GetNounDic() ([]string, error) {
 	fileList := [...]string{
@@ -55,12 +69,7 @@ func GetNounDic() ([]string, error) {
 	var dic []string
 
 	for _, v := range fileList {
-		file, err := getFile(basePath + v)
-		if err != nil {
-			return nil, err
-		}
-
-		wordList, err := getWordList(file)
+		wordList, err := getDic(v)
 		if err != nil {
 			return nil, err
 		}
@@ -73,47 +82,17 @@ func GetNounDic() ([]string, error) {
 
 // GetEomiDic : To get eomi list
 func GetEomiDic() ([]string, error) {
-	file, err := getFile(basePath + "verb/eomi.txt")
-	if err != nil {
-		return nil, err
-	}
-
-	dic, err := getWordList(file)
-	if err != nil {
-		return nil, err
-	}
-
-	return dic, nil
+	return getDic("verb/eomi.txt")
 }
 
 // GetConjunctionDic : To get conjunction list
 func GetConjunctionDic() ([]string, error) {
-	file, err := getFile(basePath + "auxiliary/conjunctions.txt")
-	if err != nil {
-		return nil, err
-	}
-
-	dic, err := getWordList(file)
-	if err != nil {
-		return nil, err
-	}
-
-	return dic, nil
+	return getDic("auxiliary/conjunctions.txt")
 }
 
 // GetAdverbDic : To get adverb list
 func GetAdverbDic() ([]string, error) {
-	file, err := getFile(basePath + "adverb/adverb.txt")
-	if err != nil {
-		return nil, err
-	}
-
-	dic, err := getWordList(file)
-	if err != nil {
-		return nil, err
-	}
-
-	return dic, nil
+	return getDic("adverb/adverb.txt")
 }
 
 // GetTypoMap : get typo map
