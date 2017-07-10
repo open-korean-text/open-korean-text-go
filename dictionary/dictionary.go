@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const basePath = "github.com/open-korean-text/open-korean-text-go/dictionary/dic/"
+var basePath string = os.Getenv("GOPATH") + "/src/github.com/open-korean-text/open-korean-text-go/dictionary/dic/"
 
 func getWordList(file *os.File) ([]string, error) {
 	var result []string
