@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+const basePath = "github.com/open-korean-text/open-korean-text-go/dictionary/dic/"
+
 func getWordList(file *os.File) ([]string, error) {
 	var result []string
 	scanner := bufio.NewScanner(file)
@@ -53,7 +55,7 @@ func GetNounDic() ([]string, error) {
 	var dic []string
 
 	for _, v := range fileList {
-		file, err := getFile("dic/" + v)
+		file, err := getFile(basePath + v)
 		if err != nil {
 			return nil, err
 		}
@@ -71,7 +73,7 @@ func GetNounDic() ([]string, error) {
 
 // GetEomiDic : To get eomi list
 func GetEomiDic() ([]string, error) {
-	file, err := getFile("dic/verb/eomi.txt")
+	file, err := getFile(basePath + "verb/eomi.txt")
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +88,7 @@ func GetEomiDic() ([]string, error) {
 
 // GetConjunctionDic : To get conjunction list
 func GetConjunctionDic() ([]string, error) {
-	file, err := getFile("dic/auxiliary/conjunctions.txt")
+	file, err := getFile(basePath + "auxiliary/conjunctions.txt")
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +103,7 @@ func GetConjunctionDic() ([]string, error) {
 
 // GetAdverbDic : To get adverb list
 func GetAdverbDic() ([]string, error) {
-	file, err := getFile("dic/adverb/adverb.txt")
+	file, err := getFile(basePath + "adverb/adverb.txt")
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +118,7 @@ func GetAdverbDic() ([]string, error) {
 
 // GetTypoMap : get typo map
 func GetTypoMap() map[string]string {
-	file, err := os.Open("dic/typos/typos.txt")
+	file, err := os.Open(basePath + "typos/typos.txt")
 	if err != nil {
 		log.Fatal(err)
 	}

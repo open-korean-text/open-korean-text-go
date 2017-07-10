@@ -6,9 +6,9 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"dic"
-	"hangul"
-	"util"
+	"github.com/open-korean-text/open-korean-text-go/dic"
+	"github.com/open-korean-text/open-korean-text-go/hangul"
+	"github.com/open-korean-text/open-korean-text-go/util"
 )
 
 const (
