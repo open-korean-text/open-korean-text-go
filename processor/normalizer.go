@@ -89,7 +89,8 @@ func normalizeRepeating(input string) string {
 	mGroup := re.FindAllString(result, -1)
 
 	for _, v := range mGroup {
-		pattern := regexp.QuoteMeta("(" + v + "){3,}")
+
+		pattern := "(" + regexp.QuoteMeta(v) + "){3,}"
 		re2 := regexp.MustCompile(pattern)
 		mGroup2 := re2.FindAllStringSubmatch(result, -1)
 
