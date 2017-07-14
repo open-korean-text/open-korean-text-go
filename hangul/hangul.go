@@ -94,15 +94,15 @@ func DecomposeHangul(c string) *HangulChar {
 }
 
 // ComposeHangul : compose hangul char
-func ComposeHangul(onsetR, vowelR, codaR rune) string {
-	if onsetR == ' ' || vowelR == ' ' {
+func ComposeHangul(onset, vowel, coda rune) string {
+	if onset == ' ' || vowel == ' ' {
 		return ""
 	}
 
 	return string(hangulBase +
-		(onsetMap[onsetR] * onsetBase) +
-		(vowelMap[onsetR] * vowelBase) +
-		codaMap[codaR])
+		(onsetMap[onset] * onsetBase) +
+		(vowelMap[vowel] * vowelBase) +
+		codaMap[coda])
 }
 
 // ComposeHangulChar : compose hangul char
