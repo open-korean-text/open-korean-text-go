@@ -94,11 +94,7 @@ func DecomposeHangul(c string) *HangulChar {
 }
 
 // ComposeHangul : compose hangul char
-func ComposeHangul(onset, vowel, coda string) string {
-	onsetR, _ := utf8.DecodeRuneInString(onset)
-	vowelR, _ := utf8.DecodeRuneInString(vowel)
-	codaR, _ := utf8.DecodeRuneInString(coda)
-
+func ComposeHangul(onsetR, vowelR, codaR rune) string {
 	if onsetR == ' ' || vowelR == ' ' {
 		return ""
 	}
@@ -111,10 +107,7 @@ func ComposeHangul(onset, vowel, coda string) string {
 
 // ComposeHangulChar : compose hangul char
 func ComposeHangulChar(hc *HangulChar) string {
-	return ComposeHangul(
-		string(hc.Onset),
-		string(hc.Vowel),
-		string(hc.Coda))
+	return ComposeHangul(hc.Onset, hc.Vowel, hc.Coda)
 }
 
 // CheckHangulChar : Is HangulChar empty?

@@ -155,6 +155,7 @@ func secondToLastDecomposed(init string) (*hangul.HangulChar, bool) {
 func normalizeEmotionAttachedChunk(chunk, target string) string {
 	chunkLen := utf8.RuneCountInString(chunk)
 	init := util.Substr(chunk, 0, chunkLen-1)
+	initLen := chunkLen - 1
 
 	hc, ok := secondToLastDecomposed(init)
 
@@ -162,13 +163,13 @@ func normalizeEmotionAttachedChunk(chunk, target string) string {
 	hc2 := hangul.DecomposeHangul(c)
 
 	if hc2.Coda == 'ㅋ' || hc2.Coda == 'ㅎ' {
-		return init + hangul.ComposeHangul(string(hc2.Onset), string(hc2.Vowel), string(' '))
+		return init + hangul.ComposeHangul(hc2.Onset, hc2.Vowel, ' ')
 	}
 
 	if ok &&
 		string(hc2.Vowel) == string(target[0]) &&
 		hangul.CheckCharInCodaMap(hc2.Onset) {
-		return init[0:len(init)-1] + hangul.ComposeHangul(string(hc.Onset), string(hc.Vowel), string(hc2.Onset))
+		return util.Substr(init, 0, initLen-1) + hangul.ComposeHangul(hc.Onset, hc.Vowel, hc2.Onset)
 	}
 
 	return chunk
