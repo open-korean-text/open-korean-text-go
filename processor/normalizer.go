@@ -71,7 +71,7 @@ func normalizeCodaN(input string) string {
 
 	hc := hangul.DecomposeHangul(lastTwoHead)
 	newHead := util.Substr(input, 0, inputLen-2) +
-		hangul.ComposeHangul(string(hc.Onset), string(hc.Vowel), string(' '))
+		hangul.ComposeHangul(hc.Onset, hc.Vowel, ' ')
 
 	lastR, _ := utf8.DecodeRuneInString(last)
 	if hc.Coda == 'ㄴ' &&
