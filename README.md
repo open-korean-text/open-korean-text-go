@@ -26,6 +26,10 @@ func main() {
 }
 ```
 
-
 ### And...
 'Tokenizer' and 'Phrase Extractor' will be built!
+
+We can use features(normalize, tokenize, extractPhrase) of open-korea-text jar!  
+ex) processor.CallMethod("normalize", "한국어를 처리하는 예시입니닼ㅋㅋㅋ")  
+To use these features, you should locate processor-go.jar file(in jar folder) in
+your project folder.

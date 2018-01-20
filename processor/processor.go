@@ -6,13 +6,13 @@ import (
 )
 
 // CallMethod : normalize, tokenize, extractPhrase
-func CallMethod(methodName string) string {
+func CallMethod(methodName string, text string) string {
 	_, env, err := jnigi.CreateJVM(jnigi.NewJVMInitArgs(false, true, jnigi.DEFAULT_VERSION, []string{"-Djava.class.path=processor-go.jar"}))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	str, err := env.NewObject("java/lang/String", []byte("한국어를 처리하는 예시입니닼ㅋㅋㅋ"))
+	str, err := env.NewObject("java/lang/String", []byte(text))
 	if err != nil {
 		log.Fatal(err)
 	}
